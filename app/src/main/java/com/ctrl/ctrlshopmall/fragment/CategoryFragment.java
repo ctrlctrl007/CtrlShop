@@ -2,18 +2,25 @@ package com.ctrl.ctrlshopmall.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.cjj.MaterialRefreshLayout;
+import com.cjj.MaterialRefreshListener;
 import com.ctrl.ctrlshopmall.R;
+import com.ctrl.ctrlshopmall.adapter.BaseAdapter;
 import com.ctrl.ctrlshopmall.adapter.CategoryAdapter;
+import com.ctrl.ctrlshopmall.adapter.HotWareAdapter;
 import com.ctrl.ctrlshopmall.adapter.decoration.DividerItemDecoration;
 import com.ctrl.ctrlshopmall.bean.Banner;
 import com.ctrl.ctrlshopmall.bean.Category;
+import com.ctrl.ctrlshopmall.bean.Page;
+import com.ctrl.ctrlshopmall.bean.Ware;
 import com.ctrl.ctrlshopmall.http.OkHttpHelper;
 import com.ctrl.ctrlshopmall.http.SpotsCallBack;
 import com.ctrl.ctrlshopmall.utils.Contants;
@@ -44,9 +51,20 @@ public class CategoryFragment extends BaseFragment {
     @ViewInject(R.id.category_banner)
     private SliderLayout mSliderLayout;
 
-    private int categoryId;
+    private long categoryId = 0;
+
+    private int currPage=1;
+    private int totalPage=1;
+    private int pageSize=10;
 
 
+    private  static final int STATE_NORMAL=0;
+    private  static final int STATE_REFREH=1;
+    private  static final int STATE_MORE=2;
+
+    private HotWareAdapter hotWareAdapter;
+
+    private int state=STATE_NORMAL;
 
     private OkHttpHelper helper;
     @Override
@@ -59,8 +77,45 @@ public class CategoryFragment extends BaseFragment {
         helper = OkHttpHelper.getInstance();
         requestCategoryDatas();
         requestBanners();
+        initFreshLayout();
 
     }
+
+    private void initFreshLayout(){
+
+        refreshLayout.setLoadMore(true);
+        refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
+            @Override
+            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                refresh();
+            }
+
+            @Override
+            public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+                super.onRefreshLoadMore(materialRefreshLayout);
+                if(currPage<=totalPage){
+                    loadMore();
+                }else{
+                    Toast.makeText(getContext(),"没有更多数据了",Toast.LENGTH_SHORT).show();
+                    refreshLayout.finishRefreshLoadMore();
+                }
+
+            }
+        });
+
+    }
+    private void refresh(){
+        currPage = 1;
+        state = STATE_REFREH;
+        requestWares();
+
+    }
+    private void loadMore(){
+        currPage = currPage+1;
+        state = STATE_MORE;
+        requestWares();
+    }
+
     private void requestBanners(){
         Map<String,String> params = new HashMap<String,String>();
         params.put("type","1");
@@ -96,6 +151,10 @@ public class CategoryFragment extends BaseFragment {
             @Override
             public void onSuccess(Response response, List<Category> categories) {
                 showCategory(categories);
+                if(categories!=null&&categories.size()>0){
+                    categoryId = categories.get(0).getId();
+                    requestWares();
+                }
             }
 
             @Override
@@ -104,11 +163,77 @@ public class CategoryFragment extends BaseFragment {
             }
         });
     }
-    public void showCategory(List<Category> categories){
+    public void showCategory(final List<Category> categories){
         CategoryAdapter adapter = new CategoryAdapter(categories,getContext());
+        adapter.setOnitemClickListener(new BaseAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Category category = categories.get(position);
+                categoryId = category.getId();
+                currPage = 1;
+                state = STATE_NORMAL;
+                requestWares();
+
+            }
+        });
         categoryRecyclerView.setAdapter(adapter);
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         categoryRecyclerView.setItemAnimator(new DefaultItemAnimator());
         categoryRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL_LIST));
+    }
+    private void requestWares(){
+        Map<String,String> params = new HashMap<>();
+        params.put("categoryId",String.valueOf(categoryId));
+        params.put("curPage",String.valueOf(currPage));
+        params.put("pageSize",String.valueOf(pageSize));
+        helper.post(Contants.API.WARES_LIST, params, new SpotsCallBack<Page<Ware>>(getContext()) {
+
+
+
+            @Override
+            public void onSuccess(Response response, Page<Ware> warePage) {
+                List<Ware> wares = warePage.getList();
+                showCategoryWare(wares);
+                totalPage = warePage.getTotalCount()/pageSize+1;
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+
+            }
+        });
+
+
+    }
+    private void showCategoryWare(List<Ware> wares){
+        switch (state){
+            case STATE_NORMAL:
+                if(hotWareAdapter==null){
+                hotWareAdapter = new HotWareAdapter(wares,R.layout.template_grid_wares,getContext());
+                goodsRecyclerView.setAdapter(hotWareAdapter);
+                goodsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+                goodsRecyclerView.setItemAnimator(new DefaultItemAnimator());}
+                else{
+                    hotWareAdapter.clear();
+                    hotWareAdapter.addData(wares);
+                    goodsRecyclerView.scrollToPosition(0);
+
+                }
+                break;
+            case STATE_REFREH:
+                hotWareAdapter.clear();
+                hotWareAdapter.addData(wares);
+
+                goodsRecyclerView.scrollToPosition(0);
+                refreshLayout.finishRefresh();
+                break;
+            case STATE_MORE:
+                hotWareAdapter.addData(hotWareAdapter.getDatas().size(),wares);
+
+                goodsRecyclerView.scrollToPosition(hotWareAdapter.getDatas().size());
+
+                refreshLayout.finishRefreshLoadMore();
+        }
+
     }
 }

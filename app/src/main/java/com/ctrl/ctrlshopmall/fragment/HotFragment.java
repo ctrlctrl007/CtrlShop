@@ -114,7 +114,7 @@ public class HotFragment extends BaseFragment {
         switch (state) {
 
             case STATE_NORMAL:
-                adapter = new HotWareAdapter(wares,getContext());
+                adapter = new HotWareAdapter(wares,R.layout.template_hot_wares,getContext());
 
                 mRecyclerView.setAdapter(adapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

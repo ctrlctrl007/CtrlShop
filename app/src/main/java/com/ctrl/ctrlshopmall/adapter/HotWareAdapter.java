@@ -17,8 +17,8 @@ import java.util.List;
 
 public class HotWareAdapter extends SimpleAdapter<Ware> {
 
-    public HotWareAdapter(List<Ware> datas, Context context) {
-        super(datas, R.layout.template_hot_wares, context);
+    public HotWareAdapter(List<Ware> datas,int layoutId, Context context) {
+        super(datas, layoutId, context);
     }
 
     @Override
