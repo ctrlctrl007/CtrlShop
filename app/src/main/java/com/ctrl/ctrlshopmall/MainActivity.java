@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private LayoutInflater mInflater;
 
     private List<Tab> tabList = new ArrayList<>(5);
+
+    private CartFragment cartFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
 
         mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
         mTabHost.setCurrentTab(0);
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String s) {
+                if(s.equals(getString(R.string.cart))){
+                    refreshCart();
+                }
+            }
+        });
 
     }
     private View biuldIndicator(Tab tab){
@@ -69,4 +79,16 @@ public class MainActivity extends AppCompatActivity {
         txt.setText(tab.getTitle());
         return view;
     }
+    private void refreshCart(){
+        if (cartFragment==null){
+            cartFragment = (CartFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.cart));
+            if (cartFragment!=null){
+                cartFragment.refreshData();
+            }
+
+        }else{
+            cartFragment.refreshData();
+        }
+    }
+
 }
