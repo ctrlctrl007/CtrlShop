@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.lidroid.xutils.ViewUtils;
 
 /**
+ * 碎片基础类
  * Created by ctrlc on 2017/11/7.
  */
 

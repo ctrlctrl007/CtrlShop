@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 商品分类及分类商品显示碎片
  * Created by ctrlc on 2017/11/7.
  */
 
@@ -117,7 +118,7 @@ public class CategoryFragment extends BaseFragment {
     }
 
     private void requestBanners(){
-        Map<String,String> params = new HashMap<String,String>();
+        Map<String,String> params = new HashMap<>();
         params.put("type","1");
 
         helper.post(Contants.API.BANNER,params,new SpotsCallBack<List<Banner>>(getContext()) {

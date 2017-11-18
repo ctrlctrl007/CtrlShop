@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 热卖商品
  * Created by ctrlc on 2017/11/7.
  */
 
@@ -78,6 +79,7 @@ public class HotFragment extends BaseFragment {
                 else{
                     Toast.makeText(getContext(),"没有更多数据了",Toast.LENGTH_SHORT).show();
                     mRefreshLayout.finishRefreshLoadMore();
+                    mRefreshLayout.setLoadMore(false);
                 }
             }
         });

@@ -1,6 +1,7 @@
 package com.ctrl.ctrlshopmall.bean;
 
 /**
+ * 滑动广告图片实体类
  * Created by ctrlc on 2017/11/9.
  */
 

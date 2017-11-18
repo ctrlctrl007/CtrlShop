@@ -3,7 +3,6 @@ package com.ctrl.ctrlshopmall.fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 主页碎片
  * Created by ctrlc on 2017/11/7.
  */
 
@@ -47,8 +47,6 @@ public class HomeFragment extends BaseFragment {
     private List<Banner> mBannerList;
 
     private OkHttpHelper mHttpHelper;
-
-    private HomeCategoryAdapter adapter;
 
     @Override
     public View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,7 +91,7 @@ public class HomeFragment extends BaseFragment {
 
     }
     private void initData(List<HomeCampaign> campaigns){
-        adapter = new HomeCategoryAdapter(campaigns,getContext());
+        HomeCategoryAdapter adapter = new HomeCategoryAdapter(campaigns, getContext());
         adapter.setHomeCampaignsListener(new HomeCategoryAdapter.OnHomeCategoryOnClickListener() {
             @Override
             public void onClick(View view, Campaign campaign) {
@@ -107,7 +105,7 @@ public class HomeFragment extends BaseFragment {
 
     private void requestBanner(){
         mHttpHelper = OkHttpHelper.getInstance();
-        Map<String,String> params = new HashMap<String,String>();
+        Map<String,String> params = new HashMap<>();
         params.put("type","1");
 
         mHttpHelper.post(Contants.API.BANNER,params,new SpotsCallBack<List<Banner>>(getContext()) {

@@ -12,13 +12,13 @@ import android.widget.TextView;
 
 import com.ctrl.ctrlshopmall.R;
 import com.ctrl.ctrlshopmall.adapter.CartAdapter;
-import com.ctrl.ctrlshopmall.bean.ShoppingCart;
 import com.ctrl.ctrlshopmall.http.ShoppingCartUtil;
 import com.ctrl.ctrlshopmall.widget.CNiaoToolBar;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
 /**
+ * 显示购物车碎片
  * Created by ctrlc on 2017/11/7.
  */
 
