@@ -16,7 +16,7 @@ import java.util.List;
 
 public abstract class BaseAdapter<T, H extends BaseViewHolder>  extends RecyclerView.Adapter<BaseViewHolder> {
     protected List<T> datas;
-    protected final int layoutId;
+    protected int layoutId;
     protected final Context context;
     protected OnItemClickListener listener;
 

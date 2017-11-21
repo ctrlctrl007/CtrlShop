@@ -45,4 +45,8 @@ public class HotWareAdapter extends SimpleAdapter<Ware> {
             });
         }
     }
+    public void resetLayout(int layoutId){
+        this.layoutId = layoutId;
+        notifyItemRangeChanged(0,getDatas().size());
+    }
 }
