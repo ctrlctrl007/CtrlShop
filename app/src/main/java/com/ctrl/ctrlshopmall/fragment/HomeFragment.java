@@ -1,5 +1,6 @@
 package com.ctrl.ctrlshopmall.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ctrl.ctrlshopmall.R;
+import com.ctrl.ctrlshopmall.WareListActivity;
 import com.ctrl.ctrlshopmall.adapter.HomeCategoryAdapter;
 import com.ctrl.ctrlshopmall.adapter.decoration.CardViewtemDecortion;
 import com.ctrl.ctrlshopmall.bean.Banner;
@@ -101,6 +103,15 @@ public class HomeFragment extends BaseFragment {
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.addItemDecoration(new CardViewtemDecortion());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        adapter.setHomeCampaignsListener(new HomeCategoryAdapter.OnHomeCategoryOnClickListener() {
+            @Override
+            public void onClick(View view, Campaign campaign) {
+                Intent intent = new Intent(getActivity(), WareListActivity.class);
+                intent.putExtra(Contants.COMPAINGAIN_ID,campaign.getId());
+
+                startActivity(intent);
+            }
+        });
     }
 
     private void requestBanner(){

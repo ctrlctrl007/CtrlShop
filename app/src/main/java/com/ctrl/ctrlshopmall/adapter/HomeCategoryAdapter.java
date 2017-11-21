@@ -1,5 +1,8 @@
 package com.ctrl.ctrlshopmall.adapter;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -74,7 +77,7 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
         return homeCampaigns.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView titleTxt;
         private ImageView bigImageView;
         private ImageView smallTopImageView;
@@ -95,22 +98,43 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
 
         @Override
         public void onClick(View view) {
-            HomeCampaign campaign = homeCampaigns.get(getLayoutPosition());
-            switch (view.getId()){
-                case R.id.imgview_big:
-                    Log.d("aaaa", "onClick");
-                    mLinstener.onClick(view,campaign.getCpOne());
-                    break;
-                case R.id.imgview_small_top:
-                    mLinstener.onClick(view,campaign.getCpTwo());
-                    break;
-                case R.id.imgview_small_bottom:
-                    mLinstener.onClick(view,campaign.getCpThree());
-                    break;
-            }
+          anim(view);
 
         }
+
+        private void anim(final View v) {
+
+            ObjectAnimator animator = ObjectAnimator.ofFloat(v, "rotationX", 0.0F, 360.0F)
+                    .setDuration(200);
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+
+                    HomeCampaign campaign = homeCampaigns.get(getLayoutPosition());
+
+                    switch (v.getId()) {
+
+                        case R.id.imgview_big:
+                            mLinstener.onClick(v, campaign.getCpOne());
+                            break;
+
+                        case R.id.imgview_small_top:
+                            mLinstener.onClick(v, campaign.getCpTwo());
+                            break;
+
+                        case R.id.imgview_small_bottom:
+                            mLinstener.onClick(v, campaign.getCpThree());
+                            break;
+
+                    }
+
+                }
+            });
+            animator.start();
+        }
     }
+
+
     public interface OnHomeCategoryOnClickListener{
         void  onClick(View view, Campaign campaign);
     }
