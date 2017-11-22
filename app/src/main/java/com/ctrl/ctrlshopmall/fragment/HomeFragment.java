@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.ctrl.ctrlshopmall.R;
 import com.ctrl.ctrlshopmall.WareListActivity;
-import com.ctrl.ctrlshopmall.WareListActivity1;
 import com.ctrl.ctrlshopmall.adapter.HomeCategoryAdapter;
 import com.ctrl.ctrlshopmall.adapter.decoration.CardViewtemDecortion;
 import com.ctrl.ctrlshopmall.bean.Banner;
