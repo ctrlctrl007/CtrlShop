@@ -1,5 +1,6 @@
 package com.ctrl.ctrlshopmall.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.ctrl.ctrlshopmall.R;
+import com.ctrl.ctrlshopmall.WareDetailActiviy;
 import com.ctrl.ctrlshopmall.adapter.BaseAdapter;
 import com.ctrl.ctrlshopmall.adapter.CategoryAdapter;
 import com.ctrl.ctrlshopmall.adapter.HotWareAdapter;
@@ -206,12 +208,20 @@ public class CategoryFragment extends BaseFragment {
 
 
     }
-    private void showCategoryWare(List<Ware> wares){
+    private void showCategoryWare(final List<Ware> wares){
         switch (state){
             case STATE_NORMAL:
                 if(hotWareAdapter==null){
                 hotWareAdapter = new HotWareAdapter(wares,R.layout.template_grid_wares,getContext());
                 goodsRecyclerView.setAdapter(hotWareAdapter);
+                hotWareAdapter.setOnitemClickListener(new BaseAdapter.OnItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+                        Intent intent = new Intent(getActivity(), WareDetailActiviy.class);
+                        intent.putExtra(Contants.WARE,wares.get(position));
+                        startActivity(intent);
+                    }
+                });
                 goodsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
                 goodsRecyclerView.setItemAnimator(new DefaultItemAnimator());}
                 else{

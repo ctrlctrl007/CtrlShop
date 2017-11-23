@@ -1,5 +1,6 @@
 package com.ctrl.ctrlshopmall;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cjj.MaterialRefreshLayout;
+import com.ctrl.ctrlshopmall.adapter.BaseAdapter;
 import com.ctrl.ctrlshopmall.adapter.HotWareAdapter;
 import com.ctrl.ctrlshopmall.adapter.decoration.DividerItemDecoration;
 import com.ctrl.ctrlshopmall.bean.Page;
@@ -115,9 +117,18 @@ public class WareListActivity extends AppCompatActivity implements PageUtil.OnPa
     }
 
     @Override
-    public void load(List<Ware> datas, int totalPage, int totalCount) {
+    public void load(final List<Ware> datas, int totalPage, int totalCount) {
         summaryTxt.setText("共有"+totalCount+"件商品");
         adapter = new HotWareAdapter(datas,R.layout.template_hot_wares,this);
+        adapter.setOnitemClickListener(new BaseAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(WareListActivity.this,WareDetailActiviy.class);
+
+                intent.putExtra(Contants.WARE,datas.get(position));
+                startActivity(intent);
+            }
+        });
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
