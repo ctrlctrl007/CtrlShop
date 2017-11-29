@@ -1,7 +1,12 @@
 package com.ctrl.ctrlshopmall.http;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
+import com.ctrl.ctrlshopmall.LoginActivity;
+import com.ctrl.ctrlshopmall.MyApplication;
+import com.ctrl.ctrlshopmall.utils.ToastUtils;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
@@ -51,10 +56,20 @@ public abstract class SpotsCallBack<T> extends BaseCallBack<T> {
     @Override
     public void onFailure(Request request, Exception e) {
         dismissDialog();
+        Log.d("aaaaaa", "onFailure: ==");
     }
 
     @Override
     public void onResponse(Response response) {
         dismissDialog();
+
+    }
+
+    @Override
+    public void onTokenError(Response response, int code) {
+        ToastUtils.show(mContext,"请先登录再进行该操作");
+        Intent intent = new Intent(mContext, LoginActivity.class);
+        mContext.startActivity(intent);
+        MyApplication.getInstance().clearUser();
     }
 }

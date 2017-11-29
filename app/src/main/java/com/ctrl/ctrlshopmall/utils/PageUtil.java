@@ -1,6 +1,7 @@
 package com.ctrl.ctrlshopmall.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.cjj.MaterialRefreshLayout;
@@ -44,8 +45,6 @@ public class PageUtil {
         requestData();
     }
     private void requestData(){
-        buildUrl();
-
         httpHelper.get(buildUrl(), new PagerAdapter(builder.mContext));
 
 
@@ -188,7 +187,6 @@ public class PageUtil {
 
         @Override
         public void onSuccess(Response response, Page<T> warePage) {
-            //wares = warePage.getList();
             builder.currentPage = warePage.getCurrentPage();
             builder.totalPage = warePage.getTotalCount()/builder.pageSize+1;
             builder.pageSize = warePage.getPageSize();
@@ -197,7 +195,7 @@ public class PageUtil {
 
         @Override
         public void onError(Response response, int code, Exception e) {
-            Toast.makeText(builder.mContext,"加载失败",Toast.LENGTH_LONG).show();
+            Toast.makeText(builder.mContext,"加载失败"+response,Toast.LENGTH_LONG).show();
             if(STATE_REFRESH==state){
                 builder.mRefreshLayout.finishRefresh();
             }else if(STATE_MORE == state){

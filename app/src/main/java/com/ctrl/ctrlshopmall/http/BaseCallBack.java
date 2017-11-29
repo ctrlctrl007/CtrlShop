@@ -64,4 +64,8 @@ public abstract class BaseCallBack<T> {
      * @param e
      */
     public abstract void onError(Response response, int code,Exception e) ;
+
+
+    public abstract void onTokenError(Response response, int code) ;
+
 }

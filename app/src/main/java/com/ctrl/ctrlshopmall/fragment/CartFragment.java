@@ -3,6 +3,7 @@ package com.ctrl.ctrlshopmall.fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,15 @@ import android.widget.TextView;
 
 import com.ctrl.ctrlshopmall.R;
 import com.ctrl.ctrlshopmall.adapter.CartAdapter;
+import com.ctrl.ctrlshopmall.bean.User;
+import com.ctrl.ctrlshopmall.http.OkHttpHelper;
 import com.ctrl.ctrlshopmall.http.ShoppingCartUtil;
+import com.ctrl.ctrlshopmall.http.SpotsCallBack;
+import com.ctrl.ctrlshopmall.utils.Contants;
 import com.ctrl.ctrlshopmall.widget.CNiaoToolBar;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.squareup.okhttp.Response;
 
 /**
  * 显示购物车碎片
@@ -42,6 +48,8 @@ public class CartFragment extends BaseFragment implements View.OnClickListener{
     private ShoppingCartUtil shoppingCartUtil;
 
     private CartAdapter adapter;
+
+    private OkHttpHelper httpHelper;
     @Override
     public View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_carts,container,false);
@@ -49,6 +57,7 @@ public class CartFragment extends BaseFragment implements View.OnClickListener{
 
     @Override
     public void init() {
+        httpHelper = OkHttpHelper.getInstance();
         shoppingCartUtil = new ShoppingCartUtil(getContext());
         showData();
         toolBar.getRightButton().setOnClickListener(this);
@@ -81,6 +90,20 @@ public class CartFragment extends BaseFragment implements View.OnClickListener{
 
 
     }
+    @OnClick(R.id.btn_order)
+    private void toOrder(View view){
+        httpHelper.get(Contants.API.USER_DETAIL, new SpotsCallBack<User>(getContext()) {
+            @Override
+            public void onSuccess(Response response, User user) {
+                Log.d("aaaaaa", "onSuccess: "+response.code());
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                Log.d("aaaaaa", "onError: "+response.code());
+            }
+        });
+    }
     private void editStart(){
         toolBar.getRightButton().setText("完成");
         totalTxt.setVisibility(View.GONE);
@@ -89,7 +112,6 @@ public class CartFragment extends BaseFragment implements View.OnClickListener{
         adapter.checkAllOrNone(false);
         toolBar.getRightButton().setTag(ACTION_COMPLETE);
         checkBox.setChecked(false);
-        //adapter.showTotalPrice();
     }
     private void editComplete(){
         toolBar.getRightButton().setText("编辑");

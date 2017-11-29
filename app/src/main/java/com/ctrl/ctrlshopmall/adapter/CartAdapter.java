@@ -94,7 +94,7 @@ public class CartAdapter extends SimpleAdapter<ShoppingCart> implements BaseAdap
         showTotalPrice();
     }
     public void isAllchecked(){
-       // datas = shoppingCartUtil.getAll();
+        datas = shoppingCartUtil.getAll();
         int count = 0;
         int checkSize = 0;
         if(datas!=null&datas.size()>0){

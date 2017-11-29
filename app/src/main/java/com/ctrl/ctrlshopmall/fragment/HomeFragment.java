@@ -89,6 +89,11 @@ public class HomeFragment extends BaseFragment {
             public void onError(Response response, int code, Exception e) {
 
             }
+
+            @Override
+            public void onTokenError(Response response, int code) {
+
+            }
         });
 
     }
