@@ -1,5 +1,6 @@
 package com.ctrl.ctrlshopmall.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.ctrl.ctrlshopmall.NewOrderActivity;
 import com.ctrl.ctrlshopmall.R;
 import com.ctrl.ctrlshopmall.adapter.CartAdapter;
 import com.ctrl.ctrlshopmall.bean.User;
@@ -92,7 +94,7 @@ public class CartFragment extends BaseFragment implements View.OnClickListener{
     }
     @OnClick(R.id.btn_order)
     private void toOrder(View view){
-        httpHelper.get(Contants.API.USER_DETAIL, new SpotsCallBack<User>(getContext()) {
+       /* httpHelper.get(Contants.API.USER_DETAIL, new SpotsCallBack<User>(getContext()) {
             @Override
             public void onSuccess(Response response, User user) {
                 Log.d("aaaaaa", "onSuccess: "+response.code());
@@ -102,7 +104,9 @@ public class CartFragment extends BaseFragment implements View.OnClickListener{
             public void onError(Response response, int code, Exception e) {
                 Log.d("aaaaaa", "onError: "+response.code());
             }
-        });
+        });*/
+        Intent intent = new Intent(getActivity(), NewOrderActivity.class);
+        startActivity(intent,true);
     }
     private void editStart(){
         toolBar.getRightButton().setText("完成");

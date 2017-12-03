@@ -1,5 +1,6 @@
 package com.ctrl.ctrlshopmall;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +23,11 @@ import com.squareup.okhttp.Response;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity {
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
+import cn.smssdk.gui.RegisterPage;
+
+public class LoginActivity extends BaseActivity {
     @ViewInject(R.id.txt_phone)
     private TextView userNameTxt;
 
@@ -72,7 +77,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Response response, LoginResMsg<User> userLoginResMsg) {
                 MyApplication.getInstance().putUser(userLoginResMsg.getData(),userLoginResMsg.getToken());
-                setResult(RESULT_OK);
+                if(MyApplication.getInstance().getIntent() == null){
+                    setResult(RESULT_OK);
+                }else{
+                    MyApplication.getInstance().jumpToTargetActivity(LoginActivity.this);
+                }
+
                 finish();
             }
 
@@ -83,5 +93,28 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+    @OnClick(R.id.txt_toReg)
+    private void toReg(View view){
+        /*// 打开注册页面
+        RegisterPage registerPage = new RegisterPage();
+        registerPage.setRegisterCallback(new EventHandler() {
+            public void afterEvent(int event, int result, Object data) {
+                // 解析注册结果
+                if (result == SMSSDK.RESULT_COMPLETE) {
+                    @SuppressWarnings("unchecked")
+                    HashMap<String,Object> phoneMap = (HashMap<String, Object>) data;
+                    String country = (String) phoneMap.get("country");
+                    String phone = (String) phoneMap.get("phone");
+                    // 提交用户信息
+                    //registerUser(country, phone);
+                }
+            }
+        });
+        registerPage.show(this);*/
+        Intent intent = new Intent(this,RegActivity.class);
+        startActivity(intent);
+        MyApplication.getInstance().putActivity(this);
+    }
+
 
 }

@@ -64,7 +64,7 @@ public class MineFragment extends BaseFragment {
         if (user!=null){
             userNameTxt.setText(user.getUsername());
             Picasso.with(getContext()).load(user.getLogo_url()).into(mLogoImageView);
-            Log.d("myimage",user.getLogo_url());
+           // Log.d("myimage",user.getLogo_url());
         }else{
             userNameTxt.setText("点击登陆");
             mLogoImageView.setImageResource(R.drawable.default_head);

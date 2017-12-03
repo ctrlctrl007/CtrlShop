@@ -21,7 +21,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import dmax.dialog.SpotsDialog;
 
-public class WareDetailActiviy extends AppCompatActivity implements View.OnClickListener{
+public class WareDetailActiviy extends BaseActivity implements View.OnClickListener{
     @ViewInject(R.id.tool_bar)
     private CNiaoToolBar mToolBar;
 

@@ -26,7 +26,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 import java.util.List;
 
-public class WareListActivity extends AppCompatActivity implements PageUtil.OnPagerListener<Ware>, TabLayout.OnTabSelectedListener,View.OnClickListener{
+public class WareListActivity extends BaseActivity implements PageUtil.OnPagerListener<Ware>, TabLayout.OnTabSelectedListener,View.OnClickListener{
     private static final int TAB_DEFAULT = 0;
     private static final int TAB_PRICE = 2;
     private static final int TAB_SALED = 1;
