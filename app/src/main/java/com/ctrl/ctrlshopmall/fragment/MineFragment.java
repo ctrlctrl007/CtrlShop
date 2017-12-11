@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ctrl.ctrlshopmall.AddressListActivity;
 import com.ctrl.ctrlshopmall.LoginActivity;
 import com.ctrl.ctrlshopmall.MyApplication;
 import com.ctrl.ctrlshopmall.R;
@@ -43,6 +44,11 @@ public class MineFragment extends BaseFragment {
         showUser(user);
 
     }
+    @OnClick(R.id.txt_my_address)
+    private void toAddressList(View view){
+        Intent intent = new Intent(getActivity(), AddressListActivity.class);
+        startActivity(intent,true);
+    }
 
     @OnClick(value = {R.id.img_head,R.id.txt_username})
     public void toLoginActivity(View view){
@@ -64,7 +70,6 @@ public class MineFragment extends BaseFragment {
         if (user!=null){
             userNameTxt.setText(user.getUsername());
             Picasso.with(getContext()).load(user.getLogo_url()).into(mLogoImageView);
-           // Log.d("myimage",user.getLogo_url());
         }else{
             userNameTxt.setText("点击登陆");
             mLogoImageView.setImageResource(R.drawable.default_head);

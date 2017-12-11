@@ -19,6 +19,8 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <!-- 银联需要的权限 -->
     <uses-permission android:name="android.permission.NFC" />
+    <!-- 百度支付需要的权限 -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:name=".MyApplication"
@@ -42,32 +44,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.pingplusplus.android.Payment Activity"
+            android:name="com.pingplusplus.android.PaymentActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 微信支付 sdk ，也是 Ping++ sdk 调用入口 -->
+        <activity-alias
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.pingplusplus.android.PaymentActivity" />
         <!-- 支付宝 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
+            android:screenOrientation="behind" />
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
+            android:screenOrientation="behind" />
 
         <!-- 银联支付 -->
         <activity
             android:name="com.unionpay.uppay.PayActivity"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize"/>
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize" />
         <activity android:name=".WareListActivity" />
         <activity android:name=".WareDetailActiviy" />
         <activity
@@ -88,7 +90,10 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".NewOrderActivity" />
         <activity android:name=".RegActivity" />
-        <activity android:name=".RegSecondActivity"></activity>
+        <activity android:name=".RegSecondActivity" />
+        <activity android:name=".PayResultActivity" />
+        <activity android:name=".AddressListActivity" />
+        <activity android:name=".AddAddressActivity"></activity>
     </application>
 
 </manifest>

@@ -50,6 +50,15 @@ public class ShoppingCartUtil {
     public void updateAll(List<ShoppingCart> datas){
         PreferencesUtils.putString(mContext,CART_JSON, JSONUtil.toJson(datas));
     }
+    public void clean(){
+       for (int i = 0;i<datas.size();i++){
+           ShoppingCart cart = datas.valueAt(i);
+           if (cart.isChecked()){
+               datas.delete(cart.getId().intValue());
+           }
+       }
+       commit();
+    }
     public List<ShoppingCart> getAll(){
         return getFromLocal();
     }

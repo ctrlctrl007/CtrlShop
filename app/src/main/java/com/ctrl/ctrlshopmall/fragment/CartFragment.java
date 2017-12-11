@@ -94,18 +94,9 @@ public class CartFragment extends BaseFragment implements View.OnClickListener{
     }
     @OnClick(R.id.btn_order)
     private void toOrder(View view){
-       /* httpHelper.get(Contants.API.USER_DETAIL, new SpotsCallBack<User>(getContext()) {
-            @Override
-            public void onSuccess(Response response, User user) {
-                Log.d("aaaaaa", "onSuccess: "+response.code());
-            }
 
-            @Override
-            public void onError(Response response, int code, Exception e) {
-                Log.d("aaaaaa", "onError: "+response.code());
-            }
-        });*/
         Intent intent = new Intent(getActivity(), NewOrderActivity.class);
+        intent.putExtra("total",totalTxt.getText());
         startActivity(intent,true);
     }
     private void editStart(){
