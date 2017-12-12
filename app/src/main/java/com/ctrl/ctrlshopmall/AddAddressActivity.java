@@ -9,22 +9,32 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.ctrl.ctrlshopmall.bean.Address;
 import com.ctrl.ctrlshopmall.city.XmlParserHandler;
 import com.ctrl.ctrlshopmall.city.model.CityModel;
 import com.ctrl.ctrlshopmall.city.model.DistrictModel;
 import com.ctrl.ctrlshopmall.city.model.ProvinceModel;
+import com.ctrl.ctrlshopmall.http.OkHttpHelper;
+import com.ctrl.ctrlshopmall.http.SpotsCallBack;
+import com.ctrl.ctrlshopmall.msg.BaseResMsg;
+import com.ctrl.ctrlshopmall.utils.Contants;
+import com.ctrl.ctrlshopmall.utils.ToastUtils;
+import com.ctrl.ctrlshopmall.utils.Utility;
 import com.ctrl.ctrlshopmall.widget.CNiaoToolBar;
 import com.ctrl.ctrlshopmall.widget.ClearEditText;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.squareup.okhttp.Response;
 
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -59,6 +69,8 @@ public class AddAddressActivity extends AppCompatActivity {
     private ArrayList<ArrayList<String>> cities = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> districts = new ArrayList<>();
 
+    private Address address; //修改地址
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +79,11 @@ public class AddAddressActivity extends AppCompatActivity {
         init();
     }
     private void init(){
+        address = (Address) getIntent().getSerializableExtra("address");
+        if (address!=null){
+            zipCode = address.getZipCode();
+            initAddress();
+        }
         initToolBar();
         initProvinceData();
         mPickerView = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
@@ -76,7 +93,7 @@ public class AddAddressActivity extends AppCompatActivity {
                 String tx = provinces.get(options1).getName()
                         + cities.get(options1).get(options2)
                         + districts.get(options1).get(options2).get(options3);
-                //zipCode = districts.get(options1).get(options2).get(options3);
+                zipCode = provinces.get(options1).getCityList().get(options2).getDistrictList().get(options3).getZipcode();
                 addressTxt.setText(tx);
             }
         }).build();
@@ -129,6 +146,9 @@ public class AddAddressActivity extends AppCompatActivity {
         }
     }
     private void initToolBar(){
+        if(address!=null){
+            mToolBar.setTitle("编辑收获地址");
+        }
         mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,11 +158,98 @@ public class AddAddressActivity extends AppCompatActivity {
         mToolBar.setRightButtonOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addAddress();
+                if(address==null) {
+                    addAddress();
+                }else{
+                    updateAddress();
+                }
             }
         });
     }
-    private void addAddress(){
+    private void initAddress(){
+        consigneeEdit.setText(address.getConsignee());
+        phoneEdit.setText(address.getPhone());
+        addressTxt.setText(address.getAddr().substring(0,8));
+        addressEdit.setText(address.getAddr().substring(9));
+    }
 
+    private void updateAddress(){
+        String consignee = consigneeEdit.getText().toString();
+        if ("".equals(consignee)) {
+            ToastUtils.show(this, "收件人不能为空");
+            return;
+        }
+        String phone = phoneEdit.getText().toString().trim();
+        if(!Utility.checkPhone(phone)){
+            ToastUtils.show(this,"请输入正确的手机号");
+            return;
+        }
+        String addressStr = addressTxt.getText().toString()+addressEdit.getText().toString();
+        if ("".equals(addressStr)) {
+            ToastUtils.show(this, "地址不能为空");
+            return;
+        }
+        Map<String,String> params = new HashMap<>(6);
+        params.put("id",address.getId()+"");
+        params.put("consignee",consignee);
+        params.put("phone",phone);
+        params.put("addr",addressStr);
+        params.put("zip_code",zipCode);
+        params.put("is_default",address.getIsDefault()+"");
+
+        OkHttpHelper.getInstance().post(Contants.API.ADDRESS_UPDATE, params, new SpotsCallBack<BaseResMsg>(this) {
+            @Override
+            public void onSuccess(Response response, BaseResMsg o) {
+                setResult(Contants.REQUEST_CODE);
+                finish();
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+
+            }
+        });
+
+
+    }
+    private void addAddress(){
+        String consignee = consigneeEdit.getText().toString();
+        if ("".equals(consignee)) {
+            ToastUtils.show(this, "收件人不能为空");
+            return;
+        }
+        String phone = phoneEdit.getText().toString().trim();
+        if(!Utility.checkPhone(phone)){
+            ToastUtils.show(this,"请输入正确的手机号");
+            return;
+        }
+        String address = addressTxt.getText().toString()+addressEdit.getText().toString();
+        if ("".equals(address)) {
+            ToastUtils.show(this, "地址不能为空");
+            return;
+        }
+        Map<String,String> params = new HashMap<>(5);
+        params.put("user_id",MyApplication.getInstance().getUser().getId()+"");
+        params.put("consignee",consignee);
+        params.put("phone",phone);
+        params.put("addr",address);
+        params.put("zip_code",zipCode);
+        OkHttpHelper.getInstance().post(Contants.API.ADDRESS_CREATE, params, new SpotsCallBack<BaseResMsg>(this) {
+            @Override
+            public void onSuccess(Response response, BaseResMsg resMsg) {
+
+
+                if (resMsg.getStatus() == BaseResMsg.STATUS_SUCCESS){
+                    setResult(Contants.REQUEST_CODE);
+                    finish();
+                    ToastUtils.show(AddAddressActivity.this,"地址添加成功");
+                }
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                ToastUtils.show(AddAddressActivity.this,"错误");
+            }
+        });
     }
 }

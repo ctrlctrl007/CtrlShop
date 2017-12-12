@@ -3,10 +3,12 @@ package com.ctrl.ctrlshopmall.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.ctrl.ctrlshopmall.AddressListActivity;
@@ -32,6 +34,11 @@ public class MineFragment extends BaseFragment {
     @ViewInject(R.id.txt_username)
     private TextView userNameTxt;
 
+    @ViewInject(R.id.btn_logout)
+    private Button logoutButton;
+
+    private User user;
+
 
     @Override
     public View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +47,7 @@ public class MineFragment extends BaseFragment {
 
     @Override
     public void init() {
-        User user = MyApplication.getInstance().getUser();
+        user = MyApplication.getInstance().getUser();
         showUser(user);
 
     }
@@ -53,10 +60,11 @@ public class MineFragment extends BaseFragment {
     @OnClick(value = {R.id.img_head,R.id.txt_username})
     public void toLoginActivity(View view){
 
+        if (user==null) {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
 
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-
-        startActivityForResult(intent, Contants.REQUEST_CODE);
+            startActivityForResult(intent, Contants.REQUEST_CODE);
+        }
 
     }
 
@@ -68,13 +76,18 @@ public class MineFragment extends BaseFragment {
     }
     private void showUser(User user){
         if (user!=null){
+            logoutButton.setVisibility(View.VISIBLE);
             userNameTxt.setText(user.getUsername());
-            Picasso.with(getContext()).load(user.getLogo_url()).into(mLogoImageView);
+            if(!TextUtils.isEmpty(user.getLogo_url())) {
+                Picasso.with(getContext()).load(user.getLogo_url()).into(mLogoImageView);
+            }
         }else{
+            logoutButton.setVisibility(View.GONE);
             userNameTxt.setText("点击登陆");
             mLogoImageView.setImageResource(R.drawable.default_head);
         }
     }
+
     /**
      * 退出登陆
      */

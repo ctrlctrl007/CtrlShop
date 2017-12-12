@@ -14,6 +14,7 @@ import com.ctrl.ctrlshopmall.utils.Contants;
 import com.ctrl.ctrlshopmall.utils.DESUtil;
 import com.ctrl.ctrlshopmall.utils.ToastUtils;
 import com.ctrl.ctrlshopmall.utils.UserLocalData;
+import com.ctrl.ctrlshopmall.utils.Utility;
 import com.ctrl.ctrlshopmall.widget.CNiaoToolBar;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -60,10 +61,10 @@ public class LoginActivity extends BaseActivity {
     private void login(View view){
         String userName = userNameTxt.getText().toString();
         String pwd = pwdTxt.getText().toString();
-        if("".equals(userName)){
-            ToastUtils.show(this,"请输入手机号");
+       if ("".equals(userName)){
+           ToastUtils.show(this,"请输入用户名");
             return;
-        }
+       }
         if("".equals(pwd)){
             ToastUtils.show(this,"请输入密码");
             return;
@@ -95,22 +96,7 @@ public class LoginActivity extends BaseActivity {
     }
     @OnClick(R.id.txt_toReg)
     private void toReg(View view){
-        /*// 打开注册页面
-        RegisterPage registerPage = new RegisterPage();
-        registerPage.setRegisterCallback(new EventHandler() {
-            public void afterEvent(int event, int result, Object data) {
-                // 解析注册结果
-                if (result == SMSSDK.RESULT_COMPLETE) {
-                    @SuppressWarnings("unchecked")
-                    HashMap<String,Object> phoneMap = (HashMap<String, Object>) data;
-                    String country = (String) phoneMap.get("country");
-                    String phone = (String) phoneMap.get("phone");
-                    // 提交用户信息
-                    //registerUser(country, phone);
-                }
-            }
-        });
-        registerPage.show(this);*/
+
         Intent intent = new Intent(this,RegActivity.class);
         startActivity(intent);
         MyApplication.getInstance().putActivity(this);
