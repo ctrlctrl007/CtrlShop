@@ -93,7 +93,8 @@
         <activity android:name=".RegSecondActivity" />
         <activity android:name=".PayResultActivity" />
         <activity android:name=".AddressListActivity" />
-        <activity android:name=".AddAddressActivity"></activity>
+        <activity android:name=".AddAddressActivity" />
+        <activity android:name=".MyOderActivity"></activity>
     </application>
 
 </manifest>

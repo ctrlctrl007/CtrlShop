@@ -189,13 +189,13 @@ public class AddAddressActivity extends AppCompatActivity {
             ToastUtils.show(this, "地址不能为空");
             return;
         }
-        Map<String,String> params = new HashMap<>(6);
-        params.put("id",address.getId()+"");
+        Map<String,Object> params = new HashMap<>(6);
+        params.put("id",address.getId());
         params.put("consignee",consignee);
         params.put("phone",phone);
         params.put("addr",addressStr);
         params.put("zip_code",zipCode);
-        params.put("is_default",address.getIsDefault()+"");
+        params.put("is_default",address.getIsDefault());
 
         OkHttpHelper.getInstance().post(Contants.API.ADDRESS_UPDATE, params, new SpotsCallBack<BaseResMsg>(this) {
             @Override
@@ -228,8 +228,8 @@ public class AddAddressActivity extends AppCompatActivity {
             ToastUtils.show(this, "地址不能为空");
             return;
         }
-        Map<String,String> params = new HashMap<>(5);
-        params.put("user_id",MyApplication.getInstance().getUser().getId()+"");
+        Map<String,Object> params = new HashMap<>(5);
+        params.put("user_id",MyApplication.getInstance().getUser().getId());
         params.put("consignee",consignee);
         params.put("phone",phone);
         params.put("addr",address);

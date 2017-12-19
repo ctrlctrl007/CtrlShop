@@ -69,7 +69,7 @@ public class LoginActivity extends BaseActivity {
             ToastUtils.show(this,"请输入密码");
             return;
         }
-        Map<String, String> params = new HashMap<>(2);
+        Map<String, Object> params = new HashMap<>(2);
         params.put("phone",userName);
         params.put("password", DESUtil.encode(Contants.DES_KEY,pwd));
         OkHttpHelper.getInstance().post(Contants.API.LOGIN, params, new SpotsCallBack<LoginResMsg<User>>(this) {

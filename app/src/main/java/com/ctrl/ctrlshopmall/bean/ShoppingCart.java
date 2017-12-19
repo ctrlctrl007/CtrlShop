@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by ctrlc on 2017/11/14.
  */
 
-public class ShoppingCart extends Ware implements Serializable {
+public class ShoppingCart extends Wares implements Serializable {
     private int count;
     private boolean isChecked = true;
 

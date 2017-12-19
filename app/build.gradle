@@ -32,13 +32,6 @@ dependencies {
     compile project(':sharesdk')
     compile name: 'SMSSDK-3.0.0', ext: 'aar'
     compile name: 'SMSSDKGUI-3.0.0', ext: 'aar'
-
-    // 必须添加
-    // 使用微信支付时添加,具体版本参考微信官方文档
-    // 使用支付宝时添加
-    // 使用银联支付时添加
-    // 使用QQ钱包时添加
-
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jiechic.library:xUtils:2.6.14'
@@ -60,6 +53,6 @@ dependencies {
     compile 'com.pingxx:pingpp-upacp:2.1.14'
     compile 'com.pingxx:pingpp-qpay:2.1.14'
     compile 'com.contrarywind:Android-PickerView:3.2.7'
-
+    compile 'com.w4lle.library:NineLayout:1.0.0'
     testCompile 'junit:junit:4.12'
 }

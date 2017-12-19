@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.SparseArray;
 
 import com.ctrl.ctrlshopmall.bean.ShoppingCart;
-import com.ctrl.ctrlshopmall.bean.Ware;
+import com.ctrl.ctrlshopmall.bean.Wares;
 import com.ctrl.ctrlshopmall.utils.JSONUtil;
 import com.ctrl.ctrlshopmall.utils.PreferencesUtils;
 import com.google.gson.reflect.TypeToken;
@@ -27,8 +27,8 @@ public class ShoppingCartUtil {
         this.mContext = mContext;
         listToSparse();
     }
-    public void put(Ware ware){
-        put(convertData(ware));
+    public void put(Wares wares){
+        put(convertData(wares));
     }
 
     public void put(ShoppingCart shoppingCart){
@@ -71,7 +71,7 @@ public class ShoppingCartUtil {
         PreferencesUtils.putString(mContext,CART_JSON, JSONUtil.toJson(shoppingCarts));
     }
 
-    public ShoppingCart convertData(Ware item){
+    public ShoppingCart convertData(Wares item){
 
         ShoppingCart cart = new ShoppingCart();
 

@@ -3,14 +3,13 @@ package com.ctrl.ctrlshopmall;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import com.ctrl.ctrlshopmall.bean.Ware;
+import com.ctrl.ctrlshopmall.bean.Wares;
 import com.ctrl.ctrlshopmall.http.ShoppingCartUtil;
 import com.ctrl.ctrlshopmall.utils.Contants;
 import com.ctrl.ctrlshopmall.utils.ToastUtils;
@@ -29,7 +28,7 @@ public class WareDetailActiviy extends BaseActivity implements View.OnClickListe
     private WebView mWebView;
 
 
-    private Ware ware;
+    private Wares wares;
 
     private WebAppInterface appInterface;
 
@@ -42,8 +41,8 @@ public class WareDetailActiviy extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ware_detail_activiy);
         ViewUtils.inject(this);
-        ware = (Ware) getIntent().getSerializableExtra(Contants.WARE);
-        if(ware ==null){
+        wares = (Wares) getIntent().getSerializableExtra(Contants.WARE);
+        if(wares ==null){
             finish();
         }
         mDialog = new SpotsDialog(this,"Loading.....");
@@ -98,10 +97,10 @@ public class WareDetailActiviy extends BaseActivity implements View.OnClickListe
         // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
         oks.setTitleUrl("http://sharesdk.cn");
         // text是分享文本，所有平台都需要这个字段
-        oks.setText(ware.getName());
+        oks.setText(wares.getName());
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
         //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
-        oks.setImageUrl(ware.getImgUrl());
+        oks.setImageUrl(wares.getImgUrl());
         // url仅在微信（包括好友和朋友圈）中使用
         oks.setUrl("http://sharesdk.cn");
         // comment是我对这条分享的评论，仅在人人网和QQ空间使用
@@ -146,18 +145,18 @@ public class WareDetailActiviy extends BaseActivity implements View.OnClickListe
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mWebView.loadUrl("javascript:showDetail("+ware.getId() +")");
+                    mWebView.loadUrl("javascript:showDetail("+ wares.getId() +")");
                 }
             });
         }
         @JavascriptInterface
         public void addToCart(long id){
-            shoppingCartUtil.put(ware);
+            shoppingCartUtil.put(wares);
             ToastUtils.show(context,"已添加到购物车");
         }
         @JavascriptInterface
         public void buy(long id){
-            shoppingCartUtil.put(ware);
+            shoppingCartUtil.put(wares);
             ToastUtils.show(context,"已添加到购物车");
         }
     }

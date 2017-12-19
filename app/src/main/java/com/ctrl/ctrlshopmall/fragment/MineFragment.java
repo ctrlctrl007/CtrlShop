@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ctrl.ctrlshopmall.AddressListActivity;
 import com.ctrl.ctrlshopmall.LoginActivity;
 import com.ctrl.ctrlshopmall.MyApplication;
+import com.ctrl.ctrlshopmall.MyOderActivity;
 import com.ctrl.ctrlshopmall.R;
 import com.ctrl.ctrlshopmall.bean.User;
 import com.ctrl.ctrlshopmall.utils.Contants;
@@ -58,7 +59,7 @@ public class MineFragment extends BaseFragment {
     }
 
     @OnClick(value = {R.id.img_head,R.id.txt_username})
-    public void toLoginActivity(View view){
+    private void toLoginActivity(View view){
 
         if (user==null) {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -66,6 +67,11 @@ public class MineFragment extends BaseFragment {
             startActivityForResult(intent, Contants.REQUEST_CODE);
         }
 
+    }
+    @OnClick(R.id.txt_my_orders)
+    private void toMyOrderActivity(View view){
+        Intent intent = new Intent(getActivity(), MyOderActivity.class);
+        startActivity(intent,true);
     }
 
     @Override

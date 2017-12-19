@@ -4,7 +4,7 @@ package com.ctrl.ctrlshopmall.bean;
  * Created by ctrlc on 2017/11/12.
  */
 
-public class Ware extends BaseBean {
+public class Wares extends BaseBean {
     private String name;
     private String imgUrl;
     private Float price;

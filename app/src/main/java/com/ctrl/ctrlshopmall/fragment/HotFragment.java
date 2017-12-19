@@ -15,7 +15,7 @@ import com.ctrl.ctrlshopmall.adapter.BaseAdapter;
 import com.ctrl.ctrlshopmall.adapter.decoration.DividerItemDecoration;
 import com.ctrl.ctrlshopmall.adapter.HotWareAdapter;
 import com.ctrl.ctrlshopmall.bean.Page;
-import com.ctrl.ctrlshopmall.bean.Ware;
+import com.ctrl.ctrlshopmall.bean.Wares;
 import com.ctrl.ctrlshopmall.utils.Contants;
 import com.ctrl.ctrlshopmall.utils.PageUtil;
 import com.google.gson.reflect.TypeToken;
@@ -27,7 +27,7 @@ import java.util.List;
  * Created by ctrlc on 2017/11/7.
  */
 
-public class HotFragment extends BaseFragment implements PageUtil.OnPagerListener<Ware>{
+public class HotFragment extends BaseFragment implements PageUtil.OnPagerListener<Wares>{
 
 
     @ViewInject(R.id.hot_recycler_view)
@@ -52,13 +52,13 @@ public class HotFragment extends BaseFragment implements PageUtil.OnPagerListene
                 setmRefreshLayout(mRefreshLayout).
                 setPageSize(10).
                 setLoadMore(true).
-                setmOnPagerListener(this).build(getContext(),new TypeToken<Page<Ware>>(){}.getType());
+                setmOnPagerListener(this).build(getContext(),new TypeToken<Page<Wares>>(){}.getType());
         pageUtil.request();
 
     }
 
     @Override
-    public void load(final List<Ware> datas, int totalPage, int totalCount) {
+    public void load(final List<Wares> datas, int totalPage, int totalCount) {
         adapter = new HotWareAdapter(datas,R.layout.template_hot_wares,getContext());
         mRecyclerView.setAdapter(adapter);
         adapter.setOnitemClickListener(new BaseAdapter.OnItemClickListener() {
@@ -76,13 +76,13 @@ public class HotFragment extends BaseFragment implements PageUtil.OnPagerListene
     }
 
     @Override
-    public void loadMore(List<Ware> datas, int totalPage, int totalCount) {
+    public void loadMore(List<Wares> datas, int totalPage, int totalCount) {
         adapter.addData(adapter.getDatas().size(),datas);
         mRecyclerView.scrollToPosition(adapter.getDatas().size());
     }
 
     @Override
-    public void refresh(List<Ware> datas, int totalPage, int totalCount) {
+    public void refresh(List<Wares> datas, int totalPage, int totalCount) {
         adapter.clear();
         adapter.addData(datas);
 

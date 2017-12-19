@@ -121,10 +121,10 @@ public class HomeFragment extends BaseFragment {
 
     private void requestBanner(){
         mHttpHelper = OkHttpHelper.getInstance();
-        Map<String,String> params = new HashMap<>();
-        params.put("type","1");
+        Map<String,Object> params = new HashMap<>();
+        params.put("type",1);
 
-        mHttpHelper.post(Contants.API.BANNER,params,new SpotsCallBack<List<Banner>>(getContext()) {
+        mHttpHelper.get(Contants.API.BANNER,params,new SpotsCallBack<List<Banner>>(getContext()) {
 
             @Override
             public void onSuccess(Response response, List<Banner> banners) {

@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ctrl.ctrlshopmall.bean.Ware;
-
 import java.util.List;
 
 /**

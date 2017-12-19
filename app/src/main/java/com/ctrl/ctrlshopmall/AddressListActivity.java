@@ -63,8 +63,8 @@ public class AddressListActivity extends AppCompatActivity {
     }
 
     private void initAddresses(){
-        final Map<String,String> params = new HashMap<>(1);
-        params.put("user_id",MyApplication.getInstance().getUser().getId()+"");
+        final Map<String,Object> params = new HashMap<>(1);
+        params.put("user_id",MyApplication.getInstance().getUser().getId());
 
 
         OkHttpHelper.getInstance().get(Contants.API.ADDRESS_LIST, params, new SpotsCallBack<List<Address>>(this) {
@@ -78,7 +78,6 @@ public class AddressListActivity extends AppCompatActivity {
 
             @Override
             public void onError(Response response, int code, Exception e) {
-                Log.d("aaaaaaa", response.toString()+MyApplication.getInstance().getUser().getId());
             }
         });
 
@@ -137,13 +136,13 @@ public class AddressListActivity extends AppCompatActivity {
 
 
     private void updateDefaultAddress(Address address){
-        Map<String,String> params = new HashMap<>(6);
-        params.put("id",address.getId()+"");
+        Map<String,Object> params = new HashMap<>(6);
+        params.put("id",address.getId());
         params.put("consignee",address.getConsignee());
         params.put("phone",address.getPhone());
         params.put("addr",address.getAddr());
         params.put("zip_code",address.getZipCode());
-        params.put("is_default",address.getIsDefault()+"");
+        params.put("is_default",address.getIsDefault());
 
         OkHttpHelper.getInstance().post(Contants.API.ADDRESS_UPDATE, params, new SpotsCallBack<BaseResMsg>(this) {
             @Override
@@ -176,8 +175,8 @@ public class AddressListActivity extends AppCompatActivity {
 
     }
     private void deleteAddress(Address address){
-        Map<String,String> params = new HashMap<>(1);
-        params.put("id",address.getId()+"");
+        Map<String,Object> params = new HashMap<>(1);
+        params.put("id",address.getId());
         OkHttpHelper.getInstance().post(Contants.API.ADDRESS_DELETE, params, new SpotsCallBack<BaseResMsg>(this) {
             @Override
             public void onSuccess(Response response, BaseResMsg o) {

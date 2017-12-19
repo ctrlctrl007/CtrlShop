@@ -61,7 +61,7 @@ public class OkHttpHelper {
 
 
 
-    public void get(String url, Map<String,String> param,BaseCallBack callback){
+    public void get(String url, Map<String,Object> param,BaseCallBack callback){
 
 
         Request request = buildGetRequest(url,param);
@@ -77,7 +77,7 @@ public class OkHttpHelper {
     }
 
 
-    public void post(String url, Map<String,String> param, BaseCallBack callback){
+    public void post(String url, Map<String,Object> param, BaseCallBack callback){
 
         Request request = buildPostRequest(url,param);
         request(request,callback);
@@ -193,17 +193,17 @@ public class OkHttpHelper {
 
 
 
-    private  Request buildPostRequest(String url,Map<String,String> params){
+    private  Request buildPostRequest(String url,Map<String,Object> params){
 
         return  buildRequest(url,HttpMethodType.POST,params);
     }
 
-    private  Request buildGetRequest(String url, Map<String,String> param){
+    private  Request buildGetRequest(String url, Map<String,Object> param){
 
         return  buildRequest(url,HttpMethodType.GET,param);
     }
 
-    private  Request buildRequest(String url,HttpMethodType methodType,Map<String,String> params){
+    private  Request buildRequest(String url,HttpMethodType methodType,Map<String,Object> params){
 
 
         Request.Builder builder = new Request.Builder()
@@ -222,7 +222,7 @@ public class OkHttpHelper {
         return builder.build();
     }
 
-    private   String buildUrlParams(String url ,Map<String,String> params) {
+    private   String buildUrlParams(String url ,Map<String,Object> params) {
 
         if(params == null)
             params = new HashMap<>(1);
@@ -233,7 +233,7 @@ public class OkHttpHelper {
 
 
         StringBuffer sb = new StringBuffer();
-        for (Map.Entry<String, String> entry : params.entrySet()) {
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
             sb.append(entry.getKey() + "=" + (entry.getValue()==null?"":entry.getValue().toString()));
             sb.append("&");
         }
@@ -251,16 +251,16 @@ public class OkHttpHelper {
         return url;
     }
 
-    private RequestBody builderFormData(Map<String,String> params){
+    private RequestBody builderFormData(Map<String,Object> params){
 
 
         FormEncodingBuilder builder = new FormEncodingBuilder();
 
         if(params !=null){
 
-            for (Map.Entry<String,String> entry :params.entrySet() ){
+            for (Map.Entry<String,Object> entry :params.entrySet() ){
 
-                builder.add(entry.getKey(),entry.getValue());
+                builder.add(entry.getKey(),entry.getValue()==null?"":entry.getValue().toString());
             }
             String token = MyApplication.getInstance().getToken();
             if(!TextUtils.isEmpty(token)){

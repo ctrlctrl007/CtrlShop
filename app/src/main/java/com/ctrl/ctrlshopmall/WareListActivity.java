@@ -2,7 +2,6 @@ package com.ctrl.ctrlshopmall;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,7 +15,7 @@ import com.ctrl.ctrlshopmall.adapter.BaseAdapter;
 import com.ctrl.ctrlshopmall.adapter.HotWareAdapter;
 import com.ctrl.ctrlshopmall.adapter.decoration.DividerItemDecoration;
 import com.ctrl.ctrlshopmall.bean.Page;
-import com.ctrl.ctrlshopmall.bean.Ware;
+import com.ctrl.ctrlshopmall.bean.Wares;
 import com.ctrl.ctrlshopmall.utils.Contants;
 import com.ctrl.ctrlshopmall.utils.PageUtil;
 import com.ctrl.ctrlshopmall.widget.CNiaoToolBar;
@@ -26,7 +25,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 import java.util.List;
 
-public class WareListActivity extends BaseActivity implements PageUtil.OnPagerListener<Ware>, TabLayout.OnTabSelectedListener,View.OnClickListener{
+public class WareListActivity extends BaseActivity implements PageUtil.OnPagerListener<Wares>, TabLayout.OnTabSelectedListener,View.OnClickListener{
     private static final int TAB_DEFAULT = 0;
     private static final int TAB_PRICE = 2;
     private static final int TAB_SALED = 1;
@@ -77,7 +76,7 @@ public class WareListActivity extends BaseActivity implements PageUtil.OnPagerLi
                 .putParam("orderBy",orderBy)
                 .setmOnPagerListener(this)
                 .setmRefreshLayout(mRefreshLayout)
-                .build(this,new TypeToken<Page<Ware>>(){}.getType());
+                .build(this,new TypeToken<Page<Wares>>(){}.getType());
         pageUtil.request();
     }
 
@@ -117,7 +116,7 @@ public class WareListActivity extends BaseActivity implements PageUtil.OnPagerLi
     }
 
     @Override
-    public void load(final List<Ware> datas, int totalPage, int totalCount) {
+    public void load(final List<Wares> datas, int totalPage, int totalCount) {
         summaryTxt.setText("共有"+totalCount+"件商品");
         adapter = new HotWareAdapter(datas,R.layout.template_hot_wares,this);
         adapter.setOnitemClickListener(new BaseAdapter.OnItemClickListener() {
@@ -137,14 +136,14 @@ public class WareListActivity extends BaseActivity implements PageUtil.OnPagerLi
     }
 
     @Override
-    public void loadMore(List<Ware> datas, int totalPage, int totalCount) {
+    public void loadMore(List<Wares> datas, int totalPage, int totalCount) {
         adapter.loadMoreData(datas);
         mRecyclerView.scrollToPosition(adapter.getDatas().size());
 
     }
 
     @Override
-    public void refresh(List<Ware> datas, int totalPage, int totalCount) {
+    public void refresh(List<Wares> datas, int totalPage, int totalCount) {
         adapter.refreshData(datas);
         mRecyclerView.scrollToPosition(0);
     }

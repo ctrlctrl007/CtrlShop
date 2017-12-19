@@ -1,13 +1,11 @@
 package com.ctrl.ctrlshopmall.utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.ctrl.ctrlshopmall.bean.Page;
-import com.ctrl.ctrlshopmall.bean.Ware;
 import com.ctrl.ctrlshopmall.http.OkHttpHelper;
 import com.ctrl.ctrlshopmall.http.SpotsCallBack;
 import com.squareup.okhttp.Request;

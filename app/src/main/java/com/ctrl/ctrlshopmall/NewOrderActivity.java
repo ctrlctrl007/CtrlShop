@@ -167,12 +167,12 @@ public class NewOrderActivity extends AppCompatActivity implements View.OnClickL
         }
         String item_json = JSONUtil.toJson(items);
 
-        Map<String,String> params = new HashMap<>(5);
-        params.put("user_id",MyApplication.getInstance().getUser().getId()+"");
+        Map<String,Object> params = new HashMap<>(5);
+        params.put("user_id",MyApplication.getInstance().getUser().getId());
         params.put("item_json",item_json);
         params.put("pay_channel",currentPay);
-        params.put("amount",(int)amount+"");
-        params.put("addr_id",1+"");
+        params.put("amount",(int)amount);
+        params.put("addr_id",1);
 
 
         createOrderButton.setEnabled(false);
@@ -253,9 +253,9 @@ public class NewOrderActivity extends AppCompatActivity implements View.OnClickL
         }
     }
     private void changeOrderStatus(final int status){
-        HashMap<String,String> params = new HashMap<>(2);
+        HashMap<String,Object> params = new HashMap<>(2);
         params.put("order_num",orderNum);
-        params.put("status",status+"");
+        params.put("status",status);
         OkHttpHelper.getInstance().post(Contants.API.ORDER_COMPLEPE, params, new SpotsCallBack<BaseResMsg>(this) {
             @Override
             public void onSuccess(Response response, BaseResMsg o) {

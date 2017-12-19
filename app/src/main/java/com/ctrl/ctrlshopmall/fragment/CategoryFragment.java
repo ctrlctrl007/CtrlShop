@@ -22,7 +22,7 @@ import com.ctrl.ctrlshopmall.adapter.decoration.DividerItemDecoration;
 import com.ctrl.ctrlshopmall.bean.Banner;
 import com.ctrl.ctrlshopmall.bean.Category;
 import com.ctrl.ctrlshopmall.bean.Page;
-import com.ctrl.ctrlshopmall.bean.Ware;
+import com.ctrl.ctrlshopmall.bean.Wares;
 import com.ctrl.ctrlshopmall.http.OkHttpHelper;
 import com.ctrl.ctrlshopmall.http.SpotsCallBack;
 import com.ctrl.ctrlshopmall.utils.Contants;
@@ -120,8 +120,8 @@ public class CategoryFragment extends BaseFragment {
     }
 
     private void requestBanners(){
-        Map<String,String> params = new HashMap<>();
-        params.put("type","1");
+        Map<String,Object> params = new HashMap<>();
+        params.put("type",1);
 
         helper.post(Contants.API.BANNER,params,new SpotsCallBack<List<Banner>>(getContext()) {
 
@@ -185,17 +185,17 @@ public class CategoryFragment extends BaseFragment {
         categoryRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL_LIST));
     }
     private void requestWares(){
-        Map<String,String> params = new HashMap<>();
+        Map<String,Object> params = new HashMap<>();
         params.put("categoryId",String.valueOf(categoryId));
         params.put("curPage",String.valueOf(currPage));
         params.put("pageSize",String.valueOf(pageSize));
-        helper.post(Contants.API.WARES_LIST, params, new SpotsCallBack<Page<Ware>>(getContext()) {
+        helper.post(Contants.API.WARES_LIST, params, new SpotsCallBack<Page<Wares>>(getContext()) {
 
 
 
             @Override
-            public void onSuccess(Response response, Page<Ware> warePage) {
-                List<Ware> wares = warePage.getList();
+            public void onSuccess(Response response, Page<Wares> warePage) {
+                List<Wares> wares = warePage.getList();
                 showCategoryWare(wares);
                 totalPage = warePage.getTotalCount()/pageSize+1;
             }
@@ -208,7 +208,7 @@ public class CategoryFragment extends BaseFragment {
 
 
     }
-    private void showCategoryWare(final List<Ware> wares){
+    private void showCategoryWare(final List<Wares> wares){
         switch (state){
             case STATE_NORMAL:
                 if(hotWareAdapter==null){
